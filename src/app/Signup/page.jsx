@@ -1,11 +1,12 @@
 "use client"
 import React, { useState } from 'react'
 import axios from 'axios';
+import { useRouter } from 'next/navigation';
 const page = () => {
   const [email,setemail]=useState('');
   const [password,setpassword]=useState('');
   const [name,setname]=useState('');
-
+  const router=useRouter();
   const handleSubmit = (e) => {
     e.preventDefault();
     const data={
@@ -17,6 +18,7 @@ const page = () => {
       axios.post("http://localhost:3000/api/signup",data)
       .then((res)=>{
         console.log(res);
+        router.push("/Login")
       })
     }
     catch(err){
