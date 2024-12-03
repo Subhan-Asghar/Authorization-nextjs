@@ -19,18 +19,16 @@ export async function POST(req){
             const token = jwt.sign({ id: user._id, name: user.name }, JWT_SECRET, {
                 expiresIn: "1h",
             });
-            response.cookies.set("token", token, {
-                httpOnly: true,
-                secure: process.env.NODE_ENV === "production",
-                maxAge: 3600, 
-            });
-            return NextResponse.json(
-                {
-                    message: "Login successful",
-                    token, 
-                },
+            const response = NextResponse.json(
+                { message: "Login successful" },
                 { status: 200 }
             );
+            response.cookies.set("token", token, {
+                httpOnly: true,
+                secure:"production",
+                maxAge: 3600, 
+            });
+            return response
         }
         else{
             return  NextResponse.json({

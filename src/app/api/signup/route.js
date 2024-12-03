@@ -3,6 +3,9 @@ import User from "@/Model/model";
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import CORS from "cors"
+
+
 
 const JWT_SECRET = "admin";
 
@@ -25,11 +28,16 @@ export async function POST(req) {
         }, JWT_SECRET, {
             expiresIn: "1h",
         });
-        return NextResponse.json({
-            message:"User created ",
-            token,
-        },{status:201})
-
+        const response = NextResponse.json(
+            { message: "Login successful" },
+            { status: 200 }
+        );
+        response.cookies.set("token", token, {
+            httpOnly: true,
+            secure: "production",
+            maxAge: 3600, 
+        });
+        return response
         
 
 
